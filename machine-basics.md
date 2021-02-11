@@ -89,5 +89,62 @@ C Code(sum.c)
   - Stored at address 0x40059e 指令地址在0x40059e
   
 
+### Disassembling Object Code
+- Disassembler 
+  - objdump -d sum 使用objdump命令反编译sum
+  - Can be run on either a.out or o.file 
+- Within gdb Debugger
+  - gdb sum  
+    disassemble sumstore
+    
+### Moving Data
+- Operand Types
+  - Immediate:立即数
+    - Example:$0x400 , $-533
+    - Like C constant, but prefixed with '$' 类似C的不变数,但是需要$符号
+    - Encoded with 1,2 or 4 bytes 最大支持4字节long
+- Register
+  - Example:%rax,%r13
+  - But %rsp reserved for special use 栈指针
 
+ - Memory
+  - Example:(%rax)
+  - 8 consecutive bytes of memory at address given by register 内存中寄存器给定地址处的8个连续字节的
+  
+  
+ ### moveq Operand Combinations
+  ```C
+  Imm -> Reg moveq $0x4,%rax  temp = 0x4;
+  
+  Imm -> Mem moveq -157,(%rax) *p =-157;
+  
+  Reg -> Reg moveq %rax,%rdx temp2 = temp1;
+  
+  Reg -> Mem moveq %rax,(%rdx) *p = temp1;
+  
+  Mem-> Reg moveq (%rax),%rdx temp = *p;
+  ```
+  
+### Simple Memory Addressing Modes
+- Normal (R) Mem[Reg[R]]
+  - Register R specifies memory address 寄存器存了访问内存的具体地址
+  - Pointer dereferencing in C
+  - Example: moveq (%rcx),%rax
+  
+- Displacement D(R) Mem[Reg[R] + D] 寄存器移位操作
+  - Register R specifies start of memory region 寄存器存在了访问内存的开始位置
+  - Constant displacement D specifies offset 从起始位置偏移D
+  - Example: moveq 8(%rbp),%rdx
+  
+### Complete Memory Addressing Modes
+- most General Form D(Rb,Ri,S) Mem[Reg[Rb] + S*Reg[Ri] + D]
+  - D:  Constant "displacement" 1,2 or 4 bytes 偏移位
+  - Rb: Base Rwgister Any of 16 interger registers 开始位置
+  - Ri: Index register Any,except for %rsp index
+  - S:  Scale 1,2,4 or 8 步长
+  
+- Special Cases
+  - (Rb,Ri)   Mem[Reg[Rb] + Reg[Ri]]
+  - D(Rb,Ri)  Mem[Reg[Rb] + Reg[Ri]+ D]
+  - (Rb,Ri,S) Mem[Reg[Rb] + S * Reg[Ri]]
   
