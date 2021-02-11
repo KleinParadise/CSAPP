@@ -107,7 +107,7 @@ C Code(sum.c)
   - Example:%rax,%r13
   - But %rsp reserved for special use 栈指针
 
- - Memory
+- Memory
   - Example:(%rax)
   - 8 consecutive bytes of memory at address given by register 内存中寄存器给定地址处的8个连续字节的
   
