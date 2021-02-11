@@ -148,3 +148,11 @@ C Code(sum.c)
   - D(Rb,Ri)  Mem[Reg[Rb] + Reg[Ri]+ D]
   - (Rb,Ri,S) Mem[Reg[Rb] + S * Reg[Ri]]
   
+### Address Computation Examples
+Expression | Address Computation | Address
+------------ | -------------  | -------------
+0x8(%rdx) | 0xf000 + 0x8 | 0xf008
+(%rdx,%rcx) | 0xf00 + 0x100 | 0xf100
+(%rdx,%rcx,4) | 0xf000 + 4*0x100 | 0xf400
+0x80(,%rdx,2) | 0x80 + 2*0xf00 | 0x1e080
+
