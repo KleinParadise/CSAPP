@@ -32,3 +32,17 @@ http://www.cs.cmu.edu/afs/cs/academic/class/15213-f15/www/lectures/06-machine-co
     - Useful to have one of the operands be a mask 判断一个寄存器是否为空即test两个值都是自己  
     ZF set when a & b == 0  
     SF set when a & b < 0  
+    
+### Reading Condition Codes
+- set low-order byte of sestination to 0 or 1 based on combinations of condition codes 根据条件码的组合将目标的低位字节设置为0或1
+- does not alter remaining 7 bytes 不会更改剩余的7个字节
+```cpp
+int gt (long x, long y){
+   return x > y
+}
+//AssemblyCode
+cmpq %rsi,%rdi #compare x:y
+setg %al #Set when >
+movzbl %al,%eax #zero rest of %rax 其他位都设置为0
+ret
+```
