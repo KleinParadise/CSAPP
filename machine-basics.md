@@ -156,3 +156,20 @@ Expression | Address Computation | Address
 (%rdx,%rcx,4) | 0xf000 + 4*0x100 | 0xf400
 0x80(,%rdx,2) | 0x80 + 2*0xf00 | 0x1e080
 
+
+### Address Computation Instruction
+- leaq Src,Dst
+  - Src is address mode expression Src是地址表达式
+  - Set Dst to address denoted by expression 将Dst设置为表达式表示的地址
+
+- Example
+```cpp
+long m12(long x){
+  return x*12;
+}
+//converted to ASM by compiler
+leaq (%rdi,%rdi,2), % rax # t = x + x*2
+salq $2,%rax #return t<<2
+```
+  - 存储的就是一个地址，因此lea操作这类寄存器时，体现出了加载有效地址的作用
+  - 寄存器如果内部存储是一个具体的数，如果此时需要对这个数做一些算术运算，比如加一减一，乘二乘四等,时lea仅仅体现的是算术运算的作用。
