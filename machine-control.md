@@ -41,8 +41,8 @@ int gt (long x, long y){
    return x > y
 }
 //AssemblyCode
-cmpq %rsi,%rdi #compare x:y
-setg %al #Set when >
-movzbl %al,%eax #zero rest of %rax 其他位都设置为0
+cmpq %rsi,%rdi    #compare x:y
+setg %al          #Set when >
+movzbl %al,%eax   #zero rest of %rax 其他位都设置为0
 ret
 ```
