@@ -163,6 +163,8 @@ Expression | Address Computation | Address
   - Set Dst to address denoted by expression 将Dst设置为表达式表示的地址
 
 - Example
+  - 存储的就是一个地址，因此lea操作这类寄存器时，体现出了加载有效地址的作用
+  - 寄存器如果内部存储是一个具体的数，如果此时需要对这个数做一些算术运算，比如加一减一，乘二乘四等,时lea仅仅体现的是算术运算的作用。
 ```cpp
 long m12(long x){
   return x*12;
@@ -171,5 +173,4 @@ long m12(long x){
 leaq (%rdi,%rdi,2), % rax # t = x + x*2
 salq $2,%rax #return t<<2
 ```
-  - 存储的就是一个地址，因此lea操作这类寄存器时，体现出了加载有效地址的作用
-  - 寄存器如果内部存储是一个具体的数，如果此时需要对这个数做一些算术运算，比如加一减一，乘二乘四等,时lea仅仅体现的是算术运算的作用。
+
