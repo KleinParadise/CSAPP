@@ -104,3 +104,47 @@ nt = !Test;
 if(nt) result = eval;
 return result;
 ```
+
+### Conditional Move Example
+```c
+long adsdiff(long x, long y){
+   long result;
+   if(x > y)
+      result = x - y;
+   else
+      result = y - x;
+   reutrn result;
+}
+
+//asm
+absdiff:
+movq  %rdi,%rax #x
+subq  %rsi,%rax #result = x - y
+movq  %rsi,%rdx 
+subq  %rdi,%rdx #eval = y -x 
+cmpq  %rsi,%rdi #x:y
+cmovle %rdx,%rdx # if <= ,result = eval
+ret
+```
+
+### Bad Cases for Conditional Move 不能使用Conditional Move的情况
+- Expensive Computations
+    - Both values get computed
+    - Only makes sense when computations are very simple //确保两个条件的计算不会太复杂  
+```c
+var = Test(x) ? Hard1(x) : Hard2(x);
+```
+
+- Risky Computations
+    - Both values get computed
+    - May have undesirable effects  
+```c
+var = p ? *p : 0; //p 可能为空不能直接取值
+```
+
+- Computations with side effects
+    - Both values get computed
+    - Must be side-effect free  
+```c
+var = x > 0 ? x*=7 : x +=3; //计算条件时改变了x的值
+```
