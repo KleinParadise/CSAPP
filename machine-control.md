@@ -148,3 +148,59 @@ var = p ? *p : 0; //p 可能为空不能直接取值
 ```c
 var = x > 0 ? x*=7 : x +=3; //计算条件时改变了x的值
 ```
+
+## Loop
+
+
+### "Do-While" Loop Compilation 非转换 c to asm
+```c
+//goto version
+long pcount_goto(unsigned long x){
+   long result = 0;
+   loop:
+   result += x & 0x1;
+   x >>= 1;
+   if(x) goto loop;
+   return result;
+}
+
+//asm
+   movl $0,%eax      #result = 0
+.L2:                 #loop:
+   movq %rdi,%rdx
+   andl $1,%edx      #t = x & 0x1
+   addq %rdx,%rax    #result +=t
+   shrq %rdi         # x>>1
+   jne  .L2          #if(x) goto loop
+   ret
+```
+
+### "Do-While" Translation #1 
+- "jump-to-middle" translation 
+- used with -Og 
+- initial goto starts loops at test
+
+```c
+//c code
+long pcount_while(unsigned long x){
+   long result = 0;
+   while(x){
+      result += x & 0x1;
+      x >>= 1;
+   }
+   return restult;
+}
+
+//goto version 类似汇编代码
+long pcount_goto_jtm(unsigned long x){
+   long result = 0;
+   goto test;
+   loop:
+      result += x & 0x1;
+      x >>= 1;
+   test:
+      if(x) goto loop;
+   return result;   
+}
+```
+ 
