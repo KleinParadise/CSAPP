@@ -46,3 +46,61 @@ setg %al          #Set when >
 movzbl %al,%eax   #zero rest of %rax 其他位都设置为0
 ret
 ```
+
+### Jumping
+- jX instructions
+    - jump to different part of code depending on condition codes 根据条件码跳转到不同代码部分    
+    - Example
+      jX | condition | description
+      ------------ | -------------  | -------------
+      jmp | 1 | unconditional
+      je | ZF | Equal/Zero
+
+
+### Conditional Branch Example
+```c
+long adsdiff(long x, long y){
+   long result;
+   if(x > y)
+      result = x - y;
+   else
+      result = y - x;
+   reutrn result;
+}
+
+//asm
+absdiff:
+cmpq %rsi,%rdi #x:y
+jle .L4
+moveq %rdi,%rax
+subq  %rsi,%rax
+ret
+.L4:
+moveq %rsi,%rax
+subq  %rdi,%rax
+ret
+```
+
+### Using Conditional Moves
+- Conditional Move instructions
+    - Instruction supports:  
+      if(Test) Dest <-- Src
+    - Gcc tries to use them
+      - but,only when known to be safe 
+
+- Why
+    - Branches are very disruptive to instruction flow through pipelines 分支对流水线中的指令流造成很大破坏
+    - Conditional moves do not require control transfer 有条件的移动不需要控制转移
+
+
+```C
+//有条件判断跳转,先计算出两个结果,再根据条件进行赋值,避免跳转计算
+val = Test ? Then_Expr : Else_Expr;
+
+//Goto Version
+result = Then_Expr;
+eval = Else_Expr;
+nt = !Test;
+if(nt) result = eval;
+return result;
+```
