@@ -203,4 +203,71 @@ long pcount_goto_jtm(unsigned long x){
    return result;   
 }
 ```
+
+### "Do-While" Translation #2
+- used with -O1  
+- initial conditional guards entrance to loop
+
+```c
+//c code
+long pcount_while(unsigned long x){
+   long result = 0;
+   while(x){
+      result += x & 0x1;
+      x >>= 1;
+   }
+   return restult;
+}
+
+//goto version 类似汇编代码
+long pcount_goto_dw(unsigned long x){
+   long result = 0;
+   if(!x) goto done;
+   loop:
+      result += x & 0x1;
+      x >>= 1;
+      if(x) goto loop;
+   done:
+   return result;   
+}
+```
+
+### "For" Loop -> While Loop
+- initial test can be optimized away
  
+ ```c
+//c code
+long pcount_for(unsigned long x){
+   size_t i;
+   long result = 0;
+   for(i = 0; i < WSIZE; i++){
+      unsigned bit = (x >> i) & 0x1;
+      result += bit;
+   }
+   return result;
+}
+
+//goto version 类似汇编代码
+long pcount_for_goto_dw(unsigned long x){
+   size_t i;
+   long result = 0;
+   i = 0;
+   loop:
+      {
+         unsigned bit = (x >> i) & 0x1;
+         result += bit;
+      }
+   i++;
+   if(i < WSIZE) {
+      goto loop;
+   }
+   done:
+   return result;
+}
+```
+
+### Switch Statement
+- 少量case时汇编为一堆if-else的集合
+- 大量case时汇编为一个跳转表,避免大量的compare计算(类似cpp的vtr-table)
+- 当前case没有break时执行完当前case跳转到default执行完返回
+- 当前case有break时执行完当前case直接返回
