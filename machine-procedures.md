@@ -32,3 +32,39 @@ http://www.cs.cmu.edu/afs/cs/academic/class/15213-f15/www/lectures/07-machine-pr
 - Procedure return:ret
   - pop address from stack 将调用后下一条指令的地址从栈中取出
   - jump to address 跳转到调用后下一条指令的地址
+
+
+
+### Code Examples
+```c
+void multstore
+ (long x, long y, long *dest) {
+    long t = mult2(x, y);
+    *dest = t;
+}
+//ass
+0000000000400540 <multstore>:
+400540: push   %rbx		# Save %rbx
+400541: mov    %rdx,%rbx	# Save dest
+400544: callq  400550 <mult2>	# mult2(x,y)
+400549: mov    %rax,(%rbx)	# Save at dest
+40054c: pop    %rbx		# Restore %rbx
+40054d: retq
+
+long mult2
+  (long a, long b)
+{
+  long s = a * b;
+  return s;
+}
+
+//ass
+0000000000400550 <mult2>:
+400550:  mov    %rdi,%rax	# a 
+400553:  imul   %rsi,%rax	# a * b
+400557:  retq			# Return
+
+
+
+
+```
