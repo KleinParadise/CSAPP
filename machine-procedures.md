@@ -72,5 +72,5 @@ long mult2
 ![pic_two](/pic/example2.png)  
 3.mult2函数执行完毕,从栈顶寄存器%rsp保存的栈顶位置0x180弹出下一条指令执行的地址0x400549  
 ![pic_three](/pic/example3.png)  
-4.更新栈顶的位置自增8位为0x120,更新当前指令寄存器(%rip)为弹出地址0x400549  
+4.更新栈顶的位置自增8位为0x120,更新当前指令寄存器(%rip)为弹出地址0x400549继续执行改程序    
 ![pic_four](/pic/example4.png)
