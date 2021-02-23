@@ -66,5 +66,11 @@ long mult2
 ```
 
 ### Control Flow Example
-![pic_one](/pic/example1.png) ![pic_two](/pic/example2.png)  
-![pic_three](/pic/example3.png) ![pic_four](/pic/example4.png)
+1.准备使用Call指令调用mult2函数,当前栈顶0x120  
+![pic_one](/pic/example1.png)  
+2.  
+![pic_two](/pic/example2.png)  
+3.  
+![pic_three](/pic/example3.png)  
+4.  
+![pic_four](/pic/example4.png)
