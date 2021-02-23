@@ -68,9 +68,9 @@ long mult2
 ### Control Flow Example
 1.准备使用Call指令调用mult2函数,当前栈顶0x120  
 ![pic_one](/pic/example1.png)  
-2.  
+2.栈顶自减8位,更新当前栈顶为0x118,在该栈顶0x118位置保存call指令的后一指令地址0x40059,更新当前指令寄存器(%rip)为call需要跳转的地址  
 ![pic_two](/pic/example2.png)  
-3.  
+3.mult2函数执行完毕,从栈顶寄存器%rsp保存的栈顶位置0x180弹出下一条指令执行的地址0x400549  
 ![pic_three](/pic/example3.png)  
-4.  
+4.更新栈顶的位置自增8位为0x120,更新当前指令寄存器(%rip)为弹出地址0x400549  
 ![pic_four](/pic/example4.png)
