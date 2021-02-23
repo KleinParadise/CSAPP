@@ -63,8 +63,8 @@ long mult2
 400550:  mov    %rdi,%rax	# a 
 400553:  imul   %rsi,%rax	# a * b
 400557:  retq			# Return
-
-
-
-
 ```
+
+### Control Flow Example
+![pic_one](/pic/example1.png) ![pic_two](/pic/example2.png)  
+![pic_three](/pic/example3.png) ![pic_four](/pic/example4.png)
