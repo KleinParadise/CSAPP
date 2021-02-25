@@ -74,3 +74,45 @@ long mult2
 ![pic_three](/pic/example3.png)  
 4.更新栈顶的位置自增8位为0x120,更新当前指令寄存器(%rip)为弹出地址0x400549继续执行改程序    
 ![pic_four](/pic/example4.png)
+
+
+### Procedure Data Flow
+  - Fist 6 arguments in %rdi,%rsi,%rdx,%rcx,%r8,%r9
+  - 多于6个参数存入栈中
+  - Return value in %rax
+
+
+### Stack-Based Languages
+  - Languages that support recursion 支持递归的语言
+    - e.g. C,Java
+    - Code must be "Reentrant" 代码必须可重入
+      - Multiple simultaneous instantiations of single procedure 单线程多个实例
+    - Need some place to store state of each instantiation 需要有地方存以下栈帧信息
+      - arguments
+      - local variables
+      - return pointer
+    - Stack discipline
+      - state for given procedure needed for limited time 在有限的时间内需要给定过程的状态
+        - From when called to when return 从何时调用到何时返回
+      - Callee returns before caller does Callee先于Caller返回
+    - Stack allocated in Frames 栈帧存于栈中
+      - state for single procedure instantiation 单线程实例化状态信息   
+
+
+
+### Stack Frames
+- Contents
+  - return information 返回信息
+  - local storage (if needed) 本地存储
+  - Temporary space(if needed）临时空间
+
+- Management 栈帧管理
+  - Space allocated when enter procedure 进入是分配空间
+    - "set-up" code 
+    - includes push by call instruction
+
+  - Deallocated when return return是释放空间
+    - "finis" code 
+    - includes pop by ret instruction
+
+  
