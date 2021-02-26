@@ -115,4 +115,55 @@ long mult2
     - "finis" code 
     - includes pop by ret instruction
 
+### x86-64/Linux Stack Frame
+- Current Stack Frame ("Top" to Bottom) 当前栈帧需要保存的
+  - "Argument build"
+    - parameters for function about to call 要调用函数的参数
+  - Local variables
+    - if canot keep in registers 不能保存在寄存器的本地变量
+  - Saved register content 寄存器内容
+  - old frame pointer (optional) 前面栈帧的指针  
+
+
+Caller Stack Frame
+- Return address
+  - pushed by call instruction
+- Arguments for this call 
+
+
+### Example Calling
+![pic_one](/pic/incr_0.png)
+```c
+movq (%rdi),%rax //将指针p指向的内存值放入%rax
+addq %rax, %rsi  //计算 x + val
+movq %rsi,(%rdi) //更改指针p的内存值为x+val
+```
+
+![pic_two](/pic/incr_1.png)  
+```c
+subq $16, %rsp //根据栈顶寄存器%rsp,在栈中开辟16字节内存
+movq $15213 , 8(%rsp) 将立即数15213放于偏于栈顶8字节的位置
+```
+![pic_three](/pic/incr_2.png)  
+```c
+movl $3000, %esi //将立即数3000放入寄存器%esi(参数寄存器1)
+leaq 8(%rsp),%rdi //将指向立即数15213的地址放入寄存器%rdi (参数寄存器2)
+```
+
+![pic_four](/pic/incr_3.png)
+```c
+call incr //调用incr函数,开辟incr栈帧
+```
+
+![pic_four](/pic/incr_4.png)
+```c
+addq 8(%rsp),%rax //将栈中8(%rsp)存的值15213与函数incr的返回值相,存入%rax
+addq $16,%rsp 从栈中回收16字节的内存
+```
+
+![pic_five](/pic/incr_5.png)
+```c
+ret //弹出返回地址,跳转
+```
+
   
