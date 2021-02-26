@@ -166,4 +166,46 @@ addq $16,%rsp 从栈中回收16字节的内存
 ret //弹出返回地址,跳转
 ```
 
+### Register Saving conventions 寄存器保存规则
+- When procedure yoo calls who 当函数yoo调用函数who
+  - yoo is the caller
+  - who is the callee
+
+- Conventions
+  - "caller Saved"
+    - caller saves temporary values in its frame before the call caller在调用call之前将临时值保存在自己栈帧中
+  - "callee Saved"
+    - callee saves temporary values in its frame before using callee在执行前把临时变量保存在自己当前栈帧中
+    - callee restores them before returning to caller 在返回到caller之前callee负责将其恢复
+
+
+### x86-64/Linux Register Usage
+- %rax
+  - return value
+  - also caller-saved
+  - can be modified by procedure 可以通过程序修改  
+
+- %rdi,...,%r9
+  - arguments
+  - also caller -saved
+  - can be modified by procedure 可以通过程序修改
+
+- %r10,%r11
+  - caller-saved
+  - can be modified by procedure 可以通过程序修改
+
+- %rbx,%r12,%r13,%r14
+  - callee-saved
+  - callee must save & restore
+
+- %rbp
+  - callee-saved
+  - callee must save & restore
+  - may be used as frame pointer
+  - can mix & mach
+
+- %rsp
+  - special from of callee save
+  - restored to original value upon exit from procedure 从程序退出时恢复到原始值
+
   
