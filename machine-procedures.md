@@ -208,4 +208,27 @@ ret //弹出返回地址,跳转
   - special from of callee save
   - restored to original value upon exit from procedure 从程序退出时恢复到原始值
 
+
+### Callee-Saved Example
+```c
+long call_incr2(long x){
+  long v1 = 15213;
+  long v2 = incr(&v1,3000);
+  return x + v2;
+  
+// ass
+call_incr2:
+  pushq %rbx              #将%rbx压栈
+  subq $16,%rsp           #栈中开辟16字节内存
+  movq %rdi,%rbx          #将call_incr2函数的参数x存入寄存器%rbx中
+  movq $15213,8(%rsp)     #将立即数15213压入栈顶偏移8字节处
+  movl $3000,%esi         #将立即数3000放入参数寄存器%rsi中 
+  leaq 8(%rsp),%rdi       #将栈顶偏移8字节处的值放入参数寄存器%rdi中 (此时%rdi里面存入的值要被覆盖故要用都寄存器%rbx存call_incr2的参数x)
+  call incr               #调用incr函数(此时%rdi,%rsi已放入incr函数需要的参数)
+  addq %rbx,%rax          #incr函数返回值放入%rax中,将之前放入%rbx的call_incr2的参数x拿出,两者相加
+  addq $16,%rsp           #释放栈内存
+  popq %rbx               #%rbx出栈
+  ret
+}
+```
   
