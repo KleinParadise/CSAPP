@@ -258,4 +258,28 @@ pcount_t:
 .L6
   rep;ret
 ```
+
+### Observations About Recursion
+- handled without special consideration 与普通函数无异,不用特殊处理
+  - stack frame mean that each function call has private storage 栈帧中都有自己的一块private的空间
+    - saved register & local variables
+    - saved return pointer
+  - Register saving conventions prevent one function call from corrupting another's data  寄存器保存约定可防止一个函数调用破坏另一个数据
+    - unless the C code explicitly does so 除非C代码明确这样做
+  - Stack discipline follows call/return pattern 堆栈规则遵循调用/返回模式
+    - if P calls Q,the Q returns before P
+    - Last in Frist out 先进后出 
+  - also works for mutual recursion 也适用相互递归
+    - P calls Q; Q calls P 
+
+  - important Points
+    - stack is the right data structure for procedure call / return 堆栈是过程调用/返回的正确数据结构
+    - if P calls Q, the Q returns before P
+  
+  - Recursion(& mutual recursion) handled by normal calling conventions 递归(相互调用递归)与函数的正常调用无异
+    - Can safely store values in local stack frame and in callee-saved registers 可以安全地将值存储在本栈帧和被调用者保存的寄存器中
+    - Put function arguments at top of stack 函数的参数放在栈顶
+    - Result return in %rax 结果存储在rax中
+  - Pointers are addresses of values 指针是值的地址
+    - on stack or global 
   
