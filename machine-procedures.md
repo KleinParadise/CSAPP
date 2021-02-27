@@ -231,4 +231,31 @@ call_incr2:
   ret
 }
 ```
+
+### Recursive Function 递归函数
+```c
+long pcount_r(unsigned long x){
+  if(x == 0)
+    return 0;
+  else
+    return(x&1) 
+          + pcount_r(x>>1);
+}
+
+//ass
+pcount_t:
+  movl $0,%eax
+  testq %rdi,%rdi   # if(x == 0) 判断x是否为0,递归终止的条件
+  je  .L6           # 结束递归
+  pushq %rbx        # %rbx压栈(上一次递归的结果) callee-save
+  movq  %rdi,%rbx   # 参数放入%rbx中
+  andl  $1,%ebx     # x&1
+  shrq  %rdi        # x>> 1
+  call  pcount_r    # call pcount_r
+  addq  %rbx,%rax   # 上次结果与本地结果相加
+  popq  %rbx        # 弹出%rbx
+  
+.L6
+  rep;ret
+```
   
