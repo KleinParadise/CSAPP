@@ -1,17 +1,17 @@
 ### Array Allocation
-	- basic principle 基本原则
-	T A[L];
-		- Array of data type T and length L 数组的类型为T长度为L
-		- Contiguously allocated region of L * sizeof(T) bytes in memory 内存中L * sizeof（T）个字节的连续分配区域
-		- char *p[3] int型,char型,double型指针所占内存大小相同。在64位机器下,都占8个字节。char *p即指针占8个字节,
-		  指针所指向的内存占1(char)字节
+- basic principle 基本原则
+T A[L];
+	- Array of data type T and length L 数组的类型为T长度为L
+	- Contiguously allocated region of L * sizeof(T) bytes in memory 内存中L * sizeof（T）个字节的连续分配区域
+	- char *p[3] int型,char型,double型指针所占内存大小相同。在64位机器下,都占8个字节。char *p即指针占8个字节,
+	  指针所指向的内存占1(char)字节
 
 ### Array Access
-	- basic principle 基本原则
-	T A[L];
-		- Array of data type T and length L 数组的类型为T长度为L
-		- Identifier A can be used as a pointer to array element 0:Type T* 标识符A可用作指向数组元素0的指针：
-		  类型T *(即A就是该数组的开始地址)
+- basic principle 基本原则
+T A[L];
+	- Array of data type T and length L 数组的类型为T长度为L
+	- Identifier A can be used as a pointer to array element 0:Type T* 标识符A可用作指向数组元素0的指针：
+	  类型T *(即A就是该数组的开始地址)
 
 int val[5];
 
