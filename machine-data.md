@@ -13,7 +13,8 @@ T A[L];
 	- Identifier A can be used as a pointer to array element 0:Type T* 标识符A可用作指向数组元素0的指针：
 	  类型T *(即A就是该数组的开始地址)
 
-int val[5];
+int val[5];  
+![pic_ont](/pic/int_val[5].png)
 
 | Reference  | Type  |   Value   |
 | :--------: | :---: | :-------: |
@@ -83,17 +84,9 @@ void zincr(zip_dig z){
 		- variable pgh : array of 4 elements,allocatee contiguously
 		- Each element is an array of 5 int's,allocatee contiguously
 	- "Row-Major" ordering of all elements in memory
-```c
-# define PCOUNT 4
-zip_dig pgh[PCOUNT] = {
-	{1,5,2,0,6},
-	{1,5,2,0,3},
-	{1,5,2,0,7},
-	{1,5,2,0,1},
-};
-```
 
-### Nested Array Row Access Code
+
+#### Nested Array Row Access Code 访问多维数组行
 - Row Vector
 	- pgh[index] is array of 5 int's
 	- starting address pgh+20*index
@@ -103,6 +96,14 @@ zip_dig pgh[PCOUNT] = {
 	- Compute as pgh + 4 *(index + 4 * index)
 
 ```c
+# define PCOUNT 4
+zip_dig pgh[PCOUNT] = {
+	{1,5,2,0,6},
+	{1,5,2,0,3},
+	{1,5,2,0,7},
+	{1,5,2,0,1},
+};
+
 int *get_pgh_zip(int index){
 	return pgh[index];
 }
@@ -114,22 +115,27 @@ leaq pgh(,%rax,4), %rax       # pgh + (20 * index)
 
 
 
-### Nested Array Element Access 嵌套数组元素访问
+#### Nested Array Element Access 多维数组具体元素访问
 
 - Array Elements
   - A[i] [j] is element of type T,which requires k bytes
   - Address A + i * (C * K) + j * K = A + (i + C + j) * K
 
-
-
-### Nested Array Element Access Code
-
+##### Nested Array Element Access Code
 - Array Elements
   - pgh[index] [dig] is int
   - address: pgh + 20 * index + 4*dig
   - = pgh + 4 *（5 * index + dig）
 
 ```c
+# define PCOUNT 4
+zip_dig pgh[PCOUNT] = {
+	{1,5,2,0,6},
+	{1,5,2,0,3},
+	{1,5,2,0,7},
+	{1,5,2,0,1},
+};
+
 int get_pgh_digit(int index,int dig){
     return pgh[index][dig];
 }
@@ -157,6 +163,8 @@ movel pgh(,%rsi,4),%eax           # M[pgh + 4 * (5 * index + dig)] 4为int 字�
 	- must do two memory reads
 		- Fist get pointer to row array
 		- Then access element within array
+
+![pic_two](/pic/univ.png)
 ```c
 zip_deg cmu = {1，2，2，1，3};
 zip_deg mit = {0，2，2，1，3};
