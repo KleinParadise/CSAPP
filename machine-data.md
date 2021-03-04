@@ -236,4 +236,12 @@ int vec_ele(size_t n, int *a,size_t i, size_t j){
 int var_ele(size_t n, int a[n][n],size_t i,size_t j) {
 	return a[i][j];
 }
+
+//ass
+# n in %rdi, a in % rsi, i in %rdx, j in % rcx
+
+imulq %rdx,%rdi 		# n * i
+leaq (%rsi,%rdi,4),%rax		# a + 4 * n * i
+movl (%rax,%rcx,4),%eax		# a + 4 * n * i + 4 * j
+ret
 ```
