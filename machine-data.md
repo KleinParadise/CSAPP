@@ -268,6 +268,7 @@ struct rec{
   struct rec *next
 }
 ```
+![pic_two](/pic/struct_1.jpg)
 
 ### Generating Pointer to Structure Member
 - Generating Pointer to Array Element
@@ -324,10 +325,12 @@ struct S1{
   double v;
 } *p;
 ```
-- Unaligned Data 未对齐的结构
+- Unaligned Data 未对齐的结构  
+- ![pic_two](/pic/struct_2.jpg)
 - Aligned Data 
   - Primitive data type requires K bytes
   - Address must be multiple of K 地址必须是K的倍数
+- ![pic_two](/pic/struct_3.jpg)
 
 
 ### Alignment Principles
@@ -356,12 +359,15 @@ struct S1{
   - initial address & structure length must be multiples of K 初始地址和结构长度必须为K的倍数
 
 - Example:
-  - K = 8,due to double element
+  - K = 8,due to double element  
+![pic_two](/pic/struct_4.jpg)
 
 
 ### Meeting overall alignment requirement
 - for largest alignment requirement K
 - overall structure must be multiple of K
+
+![pic_two](/pic/struct_5.jpg)
 
 ### Arrays of Structures
 - overall structure must be multiple of K
@@ -373,6 +379,7 @@ struct S2{
   char c;
 } a[10]
 ```
+![pic_two](/pic/struct_6.jpg)
 
 
 ### Accessing Array Elements 访问包含n个struct数组某个struct中的元素
@@ -399,6 +406,7 @@ short get_j(int idx){
 leaq (%rdi,%rdi,2),%rax 	# 3* idx
 movzwl a + 8(,%rax,4),%eax	# a + 12 * idx + 8
 ```
+![pic_two](/pic/struct_7.jpg)
 
 ### Saving Space
 - put large data types first 把结构中的大的字节放在前面
@@ -411,6 +419,7 @@ Struct S4{
   char d;
 } *p;
 ```
+![pic_two](/pic/struct_8.jpg)
 
 ```c
 Struct S5{
@@ -419,4 +428,5 @@ Struct S5{
   char d;
 } *p;
 ```
+![pic_two](/pic/struct_9.jpg)
 
