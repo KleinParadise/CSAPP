@@ -363,17 +363,14 @@ struct S1{
   - initial address & structure length must be multiples of K 初始地址和结构长度必须为K的倍数
 
 - Example:
-
-```c
-struct S1{
-  char c;
-  int i[2];
-  double v;
-} *p;
-```
   - K = 8,due to double element  
-
-
+	```c
+	struct S1{
+	  char c;
+	  int i[2];
+	  double v;
+	} *p;
+	```
 ![pic_two](/pic/struct_4.jpg)
 
 
