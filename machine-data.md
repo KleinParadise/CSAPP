@@ -346,7 +346,7 @@ struct S1{
   - inserts gaps in structure to ensure correct alignment of fields 在结构中插入间隙以确保正确对齐字段
 
 
-### satisfying alignment with structures
+### Satisfying alignment with structures
 - within structure
   - must satisfy each element's alignment requirement 必须满足每个元素的对齐要求
 
@@ -358,4 +358,65 @@ struct S1{
 - Example:
   - K = 8,due to double element
 
+
+### Meeting overall alignment requirement
+- for largest alignment requirement K
+- overall structure must be multiple of K
+
+### Arrays of Structures
+- overall structure must be multiple of K
+- satisty alignment requirement for every element 每个元素要满足对齐需求
+```c
+struct S2{
+  double v;
+  int i[2];
+  char c;
+} a[10]
+```
+
+
+### Accessing Array Elements 访问包含n个struct数组某个struct中的元素
+- Compute array offset 12 * idx
+  - sizeof(S3),including alignment spacers
+
+- Element j is at offset 8 within structure
+- Assembler gives offset a + 8
+  - resolved duiing linking
+
+```c
+struct S3{
+  short i;
+  float v;
+  short j;
+} a[10]
+
+short get_j(int idx){
+  return a[idx].j
+}
+
+//ass
+# %rdi = idx
+leaq (%rdi,%rdi,2),%rax 	# 3* idx
+movzwl a + 8(,%rax,4),%eax	# a + 12 * idx + 8
+```
+
+### Saving Space
+- put large data types first 把结构中的大的字节放在前面
+- Effect(K =4) 结构S4/S5中int为最大字节
+
+```c
+Struct S4{
+  char c;
+  int i;
+  char d;
+} *p;
+```
+
+```c
+Struct S5{
+  int i;
+  char c;
+  char d;
+} *p;
+```
 
