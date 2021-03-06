@@ -1,3 +1,6 @@
+课件地址:  
+http://www.cs.cmu.edu/afs/cs/academic/class/15213-f15/www/lectures/08-machine-data.pdf
+
 ### Array Allocation
 - basic principle 基本原则
 T A[L];
@@ -245,3 +248,114 @@ leaq (%rsi,%rdi,4),%rax		# a + 4 * n * i
 movl (%rax,%rcx,4),%eax		# a + 4 * n * i + 4 * j
 ret
 ```
+
+
+## Structures
+
+### Structure Representation
+- structure represented as block of memory 结构的实现是通过内存一块连续的区域实现
+  - big enough to hold all of the fields 足够大已支持结构中的所有字段
+  
+- Fields ordered according to declaration 根据在结构中声明的字段排序
+  - Even if another ordering could yield a more compact representation 更合理的声明方式能实现更紧凑的效果,节省内存
+
+- Compiler determines overall size + positions of fields 编译器确定整体大小+字段位置
+  - machine-level program has no understanding or the structures in the source code 机器级程序不了解源代码中的结构
+```c
+struct rec{
+  int a[4];
+  size_t i;
+  struct rec *next
+}
+```
+
+### Generating Pointer to Structure Member
+- Generating Pointer to Array Element
+  - offset of each structure member determined at compile time 在编译时确定的每个结构成员的偏移量
+  - compute as r + 4 * idx
+```c
+struct rec{
+  int a[4];
+  size_t i;
+  struct rec *next
+}
+
+int *get_ap(struct rec *r,size_t idx){
+  return &r->a[idx]; //返回a[idx]内存的地址
+}
+//ass
+# r in %rdi , idx in %rsi
+leaq (%rdi,%rsi,4), %rax
+ret
+```
+
+### Following Linked List
+```c
+//该函数实现了三种不同的内存访问形式
+struct rec{
+  int a[4];
+  size_t i;
+  struct rec *next
+}
+
+void set_val(struct rec *r,int val){
+  while(r){
+    int i = r->i;
+    r->a[i] = val;
+    r = r->next;
+  }
+}
+//ass
+# r in %rdi, val in %rsi
+.L11				#loop
+  movslq 16(%rdi), %rax		#  i = M[r+16]
+  movl   %esi,(%rdi,%rax,4)     #  M[r + 4 * i] = val
+  movq 24(%rdi),%rdi		#  r = M[r + 24]
+  testq %rdi,%rdi		#  Test r
+  jne   .L11			# if != 0 goto loop
+
+```
+
+### Structures & Alignment
+```c
+struct S1{
+  char c;
+  int i[2];
+  double v;
+} *p;
+```
+- Unaligned Data 未对齐的结构
+- Aligned Data 
+  - Primitive data type requires K bytes
+  - Address must be multiple of K 地址必须是K的倍数
+
+
+### Alignment Principles
+- Aligned Data
+  - Primitive data type requires K bytes
+  - Address must be multiple of K 地址必须是K的倍数
+  - required on some machines;advised on x86-64 在一些机器上面是必须的
+
+- Motivation(动机) for Aligning Data 
+  - memory accessed by (aligned) chunks of 4 or 8 bytes(system dependent) 由4或8个字节的（对齐的）块访问的内存（取决于系统）
+    - inefficient to load or store datum that spans quad word 加载或存储跨越四字的数据效率低下
+    - virtual memory trickier when datum spans 2 pages 当数据跨越2页时，虚拟内存会更棘手
+
+
+- Compiler
+  - inserts gaps in structure to ensure correct alignment of fields 在结构中插入间隙以确保正确对齐字段
+
+
+### satisfying alignment with structures
+- within structure
+  - must satisfy each element's alignment requirement 必须满足每个元素的对齐要求
+
+- Overall structure has alignment requirement K 整体结构有对准要求K
+  - Each structure has alignment requiremnet K 每个结构都有对齐要求
+    - K = Largest alignment of any element 
+  - initial address & structure length must be multiples of K 初始地址和结构长度必须为K的倍数
+
+- Example:
+  - K = 8,due to double element
+
+
