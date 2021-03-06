@@ -364,6 +364,13 @@ struct S1{
 
 - Example:
   - K = 8,due to double element  
+```c
+struct S1{
+  char c;
+  int i[2];
+  double v;
+} *p;
+```
 ![pic_two](/pic/struct_4.jpg)
 
 
