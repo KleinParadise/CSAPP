@@ -325,12 +325,12 @@ struct S1{
   double v;
 } *p;
 ```
-- Unaligned Data 未对齐的结构  
-- ![pic_two](/pic/struct_2.jpg)
+- Unaligned Data 未对齐的结构
+![pic_two](/pic/struct_2.jpg)
 - Aligned Data 
   - Primitive data type requires K bytes
   - Address must be multiple of K 地址必须是K的倍数
-- ![pic_two](/pic/struct_3.jpg)
+![pic_two](/pic/struct_3.jpg)
 
 
 ### Alignment Principles
